@@ -82,18 +82,22 @@ class Utils {
         }
 
 
-        InternetDomainName requestDomain = InternetDomainName.from(requestHost);
-        if (requestDomain.isUnderPublicSuffix()) {
-            requestDomain = requestDomain.topPrivateDomain();
-        }
-        InternetDomainName pageDomain = InternetDomainName.from(pageHost);
-        if (pageDomain.isUnderPublicSuffix()) {
-            pageDomain = pageDomain.topPrivateDomain();
-        }
+        try{
+            InternetDomainName requestDomain = InternetDomainName.from(requestHost);
+            if (requestDomain.isUnderPublicSuffix()) {
+                requestDomain = requestDomain.topPrivateDomain();
+            }
+            InternetDomainName pageDomain = InternetDomainName.from(pageHost);
+            if (pageDomain.isUnderPublicSuffix()) {
+                pageDomain = pageDomain.topPrivateDomain();
+            }
 
-        return !requestDomain.equals(pageDomain) &&
-                // For instance, arstechnica.net shouldn't be considered a third party for arstechnica.com
-                !requestDomain.parts().get(0).equals(pageDomain.parts().get(0));
+            return !requestDomain.equals(pageDomain) &&
+                    // For instance, arstechnica.net shouldn't be considered a third party for arstechnica.com
+                    !requestDomain.parts().get(0).equals(pageDomain.parts().get(0));
+        }catch(Exception e){
+            return true;
+        }
     }
 
     /**
